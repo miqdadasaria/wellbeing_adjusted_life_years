@@ -1,6 +1,7 @@
-# TODO: Add comment
+# Shiny ui for wellbeing adjusted life years example
 # 
-# Author: ma725
+# Author: Miqdad Asaria
+# Date: 16/06/2016
 ###############################################################################
 
 library(shiny)

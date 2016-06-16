@@ -1,6 +1,7 @@
-# TODO: Add comment
+# Shiny server for wellbeing adjusted life years example
 # 
-# Author: ma725
+# Author: Miqdad Asaria
+# Date: 16/06/2016
 ###############################################################################
 
 library(shiny)
@@ -31,8 +32,7 @@ make_consumption_graph_data = function(c_it, health, alpha, c_min){
 	}
 	x = rep(log(c_it),length(health))
 	y = sapply(w_h, identity)
-	health_group = as.factor(rep(paste("health=",health,sep=""),each=length(c_it)))
-	consumption_graph_data = data.frame(x,y,health_group,alpha=paste("alpha=",alpha,sep=""))
+	consumption_graph_data = data.frame(x,y)
 	
 	return(consumption_graph_data)
 }
@@ -62,15 +62,11 @@ plot_c_min_scenario = function(alpha, health, c_min){
 
 # Define server logic required to plot various variables against mpg
 shinyServer(function(input, output) {
+	output$caption = renderText({
+			paste("Minimum Income Level = ", input$c_min, ", Alpha = ", input$alpha, ", Health quality = ", input$health)
+	})
 			
-			# Return the formula text for printing as a caption
-			output$caption <- renderText({
-						paste("Minimum Income Level = ", input$c_min, ", Alpha = ", input$alpha, ", Health quality = ", input$health)
-					})
-			
-			# Generate a plot of the requested variable against mpg and only 
-			# include outliers if requested
-			output$consPlot <- renderPlot({
-						print(plot_c_min_scenario(as.double(input$alpha), as.double(input$health), as.integer(input$c_min)))
-					})
-		})
+	output$consPlot = renderPlot({
+		print(plot_c_min_scenario(as.double(input$alpha), as.double(input$health), as.integer(input$c_min)))
+	})
+})
